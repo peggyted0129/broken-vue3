@@ -34,15 +34,6 @@
         <div class="col">
           <div class="form-group text-left">
             <label class="form_label">地址<span class="text-danger" style="padding-left: 3px;">*</span></label>
-            <div id="add">
-              <label>Address:</label>
-              <twzipcode
-                :class-names="{county: 'form-control', district: 'form-control', zipcode: 'form-control'}"
-                default-zipcode="403"
-                v-ref:twzipcode
-              >
-              </twzipcode>
-            </div>
             <div id="twzipcode" class="d-flex">
               <div data-role="county" data-name="county"
                 data-style="form-control" class="w-50">
@@ -132,11 +123,6 @@ export default {
       errors: {}
     }
   },
-  // mounted () {
-  //   $('#twzipcode').twzipcode()
-  //   const { county, district, zipcode } = add.$refs.twzipcode
-  //   console.log(county, district, zipcode)
-  // },
   methods: {
     reset () {
       this.form.code = ''
