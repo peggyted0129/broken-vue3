@@ -2,6 +2,7 @@ import Vue, { createApp } from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'bootstrap'
+// import Twzipcode from 'vue-twzipcode';
 
 import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
 import { required, email, min } from '@vee-validate/rules'
@@ -26,3 +27,10 @@ app.mount('#app')
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+// const add = new Vue({
+//   el: '#add',
+//   components: {
+//     Twzipcode: Twzipcode,
+//     Twzipcode
+//   },
+// });

@@ -10,12 +10,6 @@
           <p class="text-white footer_content">客服專線：0800-000-123</p>
         </a>
       </div>
-        <button class="btn btn-info btn-sm" type="button" style="margin-right: 5px;">
-          <a href="#" class="text-white">聯絡我們</a>
-        </button>
-        <button class="btn btn-info btn-sm" type="button" style="margin-right: 5px;">
-          <a href="#" target="_blank" class="text-white">銷售據點</a>
-        </button>
     </div>
   </footer>
 </template>
