@@ -1,4 +1,4 @@
-import Vue, { createApp } from 'vue'
+import { createApp } from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'bootstrap'
@@ -24,5 +24,5 @@ app.component('Field', Field)
 app.component('ErrorMessage', ErrorMessage)
 app.mount('#app')
 
-Vue.config.productionTip = false
-Vue.use(VueAxios, axios)
+app.config.productionTip = false
+app.use(VueAxios, axios)

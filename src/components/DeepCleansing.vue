@@ -13,7 +13,7 @@
     <article class="align-items-xl-center" id="about" style="margin: 5vw 0px;">
       <div class="container align-items-center">
         <div id="about" style="height: 500px;background: red">
-          <h1 class="mt-15 text-center">about 產品</h1>
+          <h1 data-aos="fade-up" class="mt-15 text-center">about 產品</h1>
         </div>
       </div>
     </article>

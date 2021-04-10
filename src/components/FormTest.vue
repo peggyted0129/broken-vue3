@@ -139,6 +139,9 @@ export default {
       this.form.others = null
       $('#twzipcode').twzipcode('reset')
     }
+  },
+  mounted () {
+    $('#twzipcode').twzipcode()
   }
 }
 </script>
