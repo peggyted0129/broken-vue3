@@ -1,5 +1,5 @@
 <template>
-<div id="register" class="col-md-6 text-center" style="padding: 0px 37px;">
+<div id="formTable" class="col-md-6 text-center" style="padding: 0px 37px;">
     <h3 class="text-center text-primary">FormData<br></h3>
     <alert></alert>
     <form @submit.prevent="store" class="mb-10">
