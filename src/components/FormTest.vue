@@ -25,7 +25,7 @@
           <div class="form-group text-left">
             <label class="form_label">手機<span class="text-danger" style="padding-left: 3px;">*</span></label>
             <Field id="phone" name="手機" v-model="form.tel" class="form-control" type="text"
-                   :rules="isPhone" :class="{ 'is-invalid': errors['電話'] }"></Field>
+                   :rules="isPhone" :class="{ 'is-invalid': errors['手機'] }"></Field>
             <error-message name="手機" class="invalid-feedback"></error-message>
           </div>
         </div>
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="d-flex"></div>
-      <button class="btn btn-primary btn-block" type="submit" style="margin-top: 15px;">送出</button>
+      <button class="btn btn-primary btn-block" type="submit" style="margin-top: 15px;margin-bottom: 30px;">送出</button>
     </Form>
   </div>
 </template>
