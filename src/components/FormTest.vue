@@ -2,7 +2,9 @@
 <div id="formTable" class="col-md-6 text-center" style="padding: 0px 37px;">
     <h3 class="text-center text-primary">FormData<br></h3>
     <alert></alert>
-    <form @submit.prevent="store" class="mb-10">
+    <Form @submit="store" v-slot="{ errors, values, validate }" style="max-width:500px">
+      <div>{{ errors }}{{ values }}</div>
+      <div style="display:none">{{ validate }}</div>
       <div class="form-group text-left">
         <label class="form_label">機身序號<span class="text-danger" style="padding-left: 3px;">*</span></label>
         <input v-model="form.code" class="form-control" type="text" placeholder="請刮開外包裝保固貼紙序號">
@@ -14,19 +16,17 @@
         <div class="col">
           <div class="form-group text-left">
             <label class="form_label">姓名<span class="text-danger" style="padding-left: 3px;">*</span></label>
-            <input v-model="form.name" class="form-control" type="text">
-            <span v-if="errors.name">
-              <small class="text-danger">{{ errors.name[0] }}</small>
-            </span>
+            <Field id="name" name="姓名" :rules="isRequired" v-model="form.name"
+            class="form-control" type="text" :class="{ 'is-invalid': errors['姓名'] }"></Field>
+            <error-message name="姓名" class="invalid-feedback"></error-message>
           </div>
         </div>
         <div class="col">
           <div class="form-group text-left">
             <label class="form_label">手機<span class="text-danger" style="padding-left: 3px;">*</span></label>
-            <input v-model="form.tel" class="form-control" type="text">
-            <span v-if="errors.tel">
-              <small class="text-danger">{{ errors.tel[0] }}</small>
-            </span>
+            <Field id="phone" name="手機" v-model="form.tel" class="form-control" type="text"
+                   :rules="isPhone" :class="{ 'is-invalid': errors['電話'] }"></Field>
+            <error-message name="手機" class="invalid-feedback"></error-message>
           </div>
         </div>
       </div>
@@ -59,7 +59,9 @@
       </div>
       <div class="form-group text-left">
         <label class="form_label">E-mail</label>
-        <input v-model="form.email" class="form-control" type="email">
+        <Field id="email" name="email" class="form-control" type="email" placeholder="請輸入 Email"
+               :class="{ 'is-invalid': errors['email'] }" rules="email|required"></Field>
+        <error-message name="email" class="invalid-feedback"></error-message>
       </div>
       <div class="form-group text-left">
         <label class="form_label">發票號碼</label>
@@ -68,23 +70,23 @@
       <div class="form-group text-left">
         <label class="form_label">購買通路<span class="text-danger" style="padding-left: 3px;">*</span></label>
         <div class="d-flex align-items-center flex-wrap">
-          <template v-for="item in items">
+          <template v-for="item in items" :key="item.key">
             <div v-if="item.key=='seller'" :key="item.key" class="d-flex align-items-center" style="width: fit-content; margin: 5px 0px;">
               <div class="custom-control custom-control-inline custom-radio" style="margin-right: 8px;">
-                <input type="radio" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input">
+                <input type="radio" name="form.shop" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input" checked>
                 <label class="custom-control-label" :for="item.key" style="margin-top: 5px;">{{ item.value }}</label>
               </div>
               <input v-model="form.seller" class="form-control" type="text" placeholder="業務姓名或 N" style="width: 135px;margin-right: 8px;">
             </div>
             <div v-else-if="item.key=='others'" :key="item.key" class="d-flex align-items-center" style="width: fit-content;margin: 5px 0px;">
               <div class="custom-control custom-control-inline custom-radio" style="min-width: 65px;margin-right: 8px;">
-                <input type="radio" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input">
+                <input type="radio" name="form.shop" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input">
                 <label class="custom-control-label" :for="item.key" style="margin-top: 5px;">{{ item.value }}</label>
               </div>
               <input v-model="form.others" class="form-control" type="text" placeholder="請填寫" style="width: 175px;">
             </div>
             <div v-else :key="item.key" class="custom-control custom-control-inline custom-radio">
-              <input type="radio" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input">
+              <input type="radio" name="form.shop" v-model="form.shop" :value="item.key" :id="item.key" class="custom-control-input">
               <label :for="item.key" class="custom-control-label">{{ item.value }}</label>
             </div>
           </template>
@@ -95,7 +97,7 @@
       </div>
       <div class="d-flex"></div>
       <button class="btn btn-primary btn-block" type="submit" style="margin-top: 15px;">送出</button>
-    </form>
+    </Form>
   </div>
 </template>
 <script>
@@ -119,11 +121,21 @@ export default {
         seller: null,
         others: null
       },
-      items: [],
+      items: [
+        { key: 'department', value: '百貨專櫃' },
+        { key: 'drug', value: '藥局診所' },
+        { key: 'online', value: '網路購買' },
+        { key: 'gift', value: '親友贈送' },
+        { key: 'seller', value: '專員訂購' },
+        { key: 'others', value: '其他' }
+      ],
       errors: {}
     }
   },
   methods: {
+    store () {
+      console.log(this.form)
+    },
     reset () {
       this.form.code = ''
       this.form.name = ''
@@ -141,7 +153,17 @@ export default {
     }
   },
   mounted () {
+    // const vm = this
+    // const api = 'http://wwwtest.mira-teeth.com.tw/admin/api/shop'
+    // vm.$http.get(api).then(response => {
+    //   console.log(response)
+    //   vm.items = response.data
+    //   console.log(vm.items)
+    // })
     $('#twzipcode').twzipcode()
+  },
+  created () {
+    console.log(this)
   }
 }
 </script>

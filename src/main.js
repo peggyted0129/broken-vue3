@@ -1,12 +1,13 @@
 import { createApp } from 'vue'
+import { Field, Form, ErrorMessage, defineRule, configure } from 'vee-validate'
+import { required, email, min } from '@vee-validate/rules'
+import { localize, setLocale } from '@vee-validate/i18n'
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
+
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import 'bootstrap'
 
-import { Form, Field, ErrorMessage, defineRule, configure } from 'vee-validate'
-import { required, email, min } from '@vee-validate/rules'
-import { localize, setLocale } from '@vee-validate/i18n'
-import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import App from './App.vue'
 import router from './router'
 
@@ -18,6 +19,7 @@ configure({
   validateOnInput: true
 })
 setLocale('zh_TW')
+
 const app = createApp(App).use(router)
 app.component('Form', Form)
 app.component('Field', Field)

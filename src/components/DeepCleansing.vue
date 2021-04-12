@@ -5,9 +5,6 @@
       <div class="container-fluid">
         <div style="height: 500px;background: pink" data-aos="fade-up">
           <h1 class="text-center">story 品牌故事</h1>
-          <div class="mt-15" data-aos="fade-up">
-            <img style="height: 300px;width: 300px" src="https://upload.cc/i1/2020/12/10/lFshr3.jpg" alt="">
-          </div>
         </div>
       </div>
     </article>
@@ -23,6 +20,8 @@
 </template>
 <script>
 import AOS from 'aos'
+import 'aos/dist/aos.css'
+
 export default {
   mounted () {
     AOS.init({
