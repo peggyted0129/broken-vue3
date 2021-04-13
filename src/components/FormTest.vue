@@ -1,7 +1,6 @@
 <template>
 <div id="formTable" class="col-md-6 text-center" style="padding: 0px 37px;">
     <h3 class="text-center text-primary">FormData<br></h3>
-    <alert></alert>
     <Form @submit="store" v-slot="{ errors, values, validate }" style="max-width:500px">
       <div>{{ errors }}{{ values }}</div>
       <div style="display:none">{{ validate }}</div>
@@ -34,8 +33,18 @@
         <div class="col">
           <div class="form-group text-left">
             <label class="form_label">地址<span class="text-danger" style="padding-left: 3px;">*</span></label>
-            <div id="twzipcode" class="d-flex">
-              <div data-role="county" data-name="county"
+            <!-- <div id="twzipcode" class="d-flex"> -->
+            <div class="d-flex">
+              <select id="縣市" class="form-control w-50" v-model="form.county">
+                <option value="" disabled>縣市</option>
+                <option v-for="(item, key) in aryCity" v-bind:key="key" :value="item">{{ item }}</option>
+              </select>
+              <select id="鄉鎮市區" class="form-control w-50" v-model="form.district">
+                <option value="" disabled>鄉鎮市區</option>
+                <option v-for="(item, key) in filterData" v-bind:key="key" :value="item">{{ item.city }}</option>
+              </select>
+              <input type="text" :value="form.zipcode" class="w-25">  <!--v-mdoel="form.zipcode"-->
+              <!-- <div data-role="county" data-name="county"
                 data-style="form-control" class="w-50">
               </div>
               <div data-role="district" data-name="district[]"
@@ -43,17 +52,16 @@
               </div>
               <div data-role="zipcode" data-name="zipcode"
                 data-style="form-control" class="w-25">
-              </div>
+              </div> -->
             </div>
-            <span v-if="errors.zipcode">
+            <!-- <span v-if="errors.zipcode">
               <small class="text-danger">{{ errors.zipcode[0] }}</small>
-            </span>
+            </span> -->
           </div>
           <div class="form-group text-left">
-            <input v-model="form.address" class="form-control" type="text">
-            <span v-if="errors.address">
-              <small class="text-danger">{{ errors.address[0] }}</small>
-            </span>
+            <Field v-model="form.address" id="地址" name="地址" class="form-control" type="text"
+            :class="{ 'is-invalid': errors['地址'] }" rules="required"></Field>
+            <error-message name="地址" class="invalid-feedback"></error-message>
           </div>
         </div>
       </div>
@@ -101,8 +109,8 @@
   </div>
 </template>
 <script>
-/* global $ */
-// import 'jquery-twzipcode'
+// /* global $ */
+import twzipcode from 'twzipcode-data'
 
 export default {
   data () {
@@ -129,10 +137,40 @@ export default {
         { key: 'seller', value: '專員訂購' },
         { key: 'others', value: '其他' }
       ],
-      errors: {}
+      errors: {},
+      aryCity: [], // (150 行)假設縣市名稱
+      cities: '', // 由套件撈取的資料
+      zipCode: '' // 由套件撈取的資料
+    }
+  },
+  computed: {
+    filterData () {
+      const vm = this
+      let getCity = [] // 篩選過後的縣市 [{id: 100, county: "臺北市", city: "中正區"},...]
+      let zip = []
+      if (vm.form.county !== '') {
+        getCity = vm.zipCode.filter(item => item.county === vm.form.county)
+        if (vm.form.district !== '') {
+          zip = getCity.filter(item => item.city === vm.form.district)
+          zip.forEach(item => {
+            vm.form.zipcode = item.id
+          })
+        }
+      }
+      return getCity
     }
   },
   methods: {
+    getZipCode () {
+      const vm = this
+      vm.zipCode = twzipcode().zipcodes
+      vm.cities = twzipcode().counties
+      console.log(vm.zipCode) // 取得各縣市的郵遞區號
+      // console.log(vm.cities) // 取得各縣市名稱 (不重複)
+      for (let i = 0; i < 22; i++) {
+        vm.aryCity.push(vm.cities[i].id)
+      }
+    },
     store () {
       console.log(this.form)
     },
@@ -149,21 +187,22 @@ export default {
       this.form.shop = ''
       this.form.seller = null
       this.form.others = null
-      $('#twzipcode').twzipcode('reset')
+      // $('#twzipcode').twzipcode('reset')
     }
   },
-  mounted () {
-    // const vm = this
-    // const api = 'http://wwwtest.mira-teeth.com.tw/admin/api/shop'
-    // vm.$http.get(api).then(response => {
-    //   console.log(response)
-    //   vm.items = response.data
-    //   console.log(vm.items)
-    // })
-    $('#twzipcode').twzipcode()
-  },
+  // mounted () {
+  //   const vm = this
+  //   const api = 'http://wwwtest.mira-teeth.com.tw/admin/api/shop'
+  //   vm.$http.get(api).then(response => {
+  //     vm.items = response.data
+  //     console.log(vm.items)
+  //   })
+  //   // $('#twzipcode').twzipcode()
+  // },
   created () {
-    console.log(this)
+    const vm = this
+    vm.getZipCode()
+    console.log(vm.aryCounty)
   }
 }
 </script>
