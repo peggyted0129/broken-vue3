@@ -15,8 +15,8 @@
         <div class="col">
           <div class="form-group text-left">
             <label class="form_label">姓名<span class="text-danger" style="padding-left: 3px;">*</span></label>
-            <Field id="name" name="姓名" :rules="isRequired" v-model="form.name"
-            class="form-control" type="text" :class="{ 'is-invalid': errors['姓名'] }"></Field>
+            <Field v-model="form.name" class="form-control" type="text" id="姓名" name="姓名"
+                   :class="{ 'is-invalid': errors['姓名'] }" rules="required"></Field>
             <error-message name="姓名" class="invalid-feedback"></error-message>
           </div>
         </div>
@@ -35,14 +35,20 @@
             <label class="form_label">地址<span class="text-danger" style="padding-left: 3px;">*</span></label>
             <!-- <div id="twzipcode" class="d-flex"> -->
             <div class="d-flex">
-              <select id="縣市" class="form-control w-50" v-model="form.county">
+              <select id="縣市" name="縣市" class="form-control w-50" v-model="form.county">
                 <option value="" disabled>縣市</option>
                 <option v-for="(item, key) in aryCity" v-bind:key="key" :value="item">{{ item }}</option>
               </select>
-              <select id="鄉鎮市區" class="form-control w-50" v-model="form.district">
+              <select id="鄉鎮市區" name="鄉鎮市區" class="form-control w-50" v-model="form.district">
                 <option value="" disabled>鄉鎮市區</option>
                 <option v-for="(item, key) in filterData" v-bind:key="key" :value="item">{{ item.city }}</option>
               </select>
+              <!-- <Field id="鄉鎮市區" name="鄉鎮市區" class="form-control w-50" v-model="form.district"
+              :class="{ 'is-invalid': errors['鄉鎮市區'] }" rules="required">
+                <option value="" disabled>鄉鎮市區</option>
+                <option v-for="(item, key) in filterData" v-bind:key="key" :value="item">{{ item.city }}</option>
+              </Field> -->  <!--失敗的驗證-->
+              <!-- <error-message name="鄉鎮市區" class="invalid-feedback"></error-message> -->
               <input type="text" :value="form.zipcode" class="w-25">  <!--v-mdoel="form.zipcode"-->
               <!-- <div data-role="county" data-name="county"
                 data-style="form-control" class="w-50">
@@ -173,6 +179,10 @@ export default {
     },
     store () {
       console.log(this.form)
+    },
+    isPhone (value) {
+      const phoneNumber = /^(09)[0-9]{8}$/
+      return phoneNumber.test(value) ? true : '需要正確的電話號碼'
     },
     reset () {
       this.form.code = ''
