@@ -1,4 +1,8 @@
-# mira-teeth-vue3
+# mira-teeth-vue3 
+## 使用匯入 "郵遞區號" json 資料，使用 JavaScript 原生語法做篩選
+* 目前遇到的問題
+* 1. "郵遞區號" 驗證提示碼破版
+* 2. 使用 navbar 錨點滑到網頁指定位置，區塊內容部分標題被 navbar 遮住
 
 ## Project setup
 ```
