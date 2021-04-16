@@ -1,4 +1,4 @@
-# Vue 3 表格驗證 side-project
+# Vue 3 表格驗證 side-project  ( 分支 )
 ## 使用匯入 "郵遞區號" json 資料，使用 JavaScript 原生語法做篩選
 ### 目前遇到的問題
 * "郵遞區號" 驗證提示碼破版
